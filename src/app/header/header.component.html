@@ -1,0 +1,31 @@
+<header>
+  <div class="mobile-menu">
+    <button class="menu" (click)="openMobileMenu()">
+      <img src="assets/menu.svg" alt="">
+    </button>
+    <div class="mobile-menu-background" *ngIf="mobileMenuOpen" (click)="openMobileMenu()"></div>
+    <div class="mobile-menu-dropdown" *ngIf="mobileMenuOpen" @fadeInOut>
+      <ul>
+        <li id="close-mobile-menu" (click)="openMobileMenu()"><img src="assets/x.svg" alt=""></li>
+        <li style="border-top: 1px solid #ccc"><a [routerLink]="['/home']" (click)="openMobileMenu()">Home</a></li>
+        <li><a [routerLink]="['/hg']" (click)="openMobileMenu()">HG</a></li>
+        <li><a [routerLink]="['/ffa']" (click)="openMobileMenu()">Hero FFA</a></li>
+        <li><a [routerLink]="['/subwaysurfers']" (click)="openMobileMenu()">SubwaySurfers</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="header-logo">
+    <img src="assets/Logo.png" alt="Logo">
+    <div class="hidden">
+      X <img src="assets/noriskclient.svg" alt="">
+    </div>
+  </div>
+  <nav>
+    <ul class="desktop-menu">
+      <li><a [routerLink]="['/home']" (click)="openMobileMenu()">Home</a></li>
+      <li><a [routerLink]="['/hg']" (click)="openMobileMenu()">HG</a></li>
+      <li><a [routerLink]="['/ffa']" (click)="openMobileMenu()">Hero FFA</a></li>
+      <li><a [routerLink]="['/subwaysurfers']" (click)="openMobileMenu()">SubwaySurfers</a></li>
+    </ul>
+  </nav>
+</header>

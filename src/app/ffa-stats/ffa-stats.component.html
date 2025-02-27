@@ -1,0 +1,144 @@
+<main>
+  <div class="banner">
+    <img src="assets/background.png" alt="" class="banner-img">
+    <div class="banner-content">
+      <h1>Hero FFA</h1>
+      <p>
+        Kämpfe als Superheld in Hero FFA auf <span style="color: #0a93b3">HGLabor.de</span>!<br>
+        Wähle deinen Helden, verbessere ihn mit XP und entdecke neue Fähigkeiten!
+        Spiele mit dem <span style="color: #0a93b3">UHC</span> oder <span style="color: #0a93b3">Soup</span> Kit und sammle Lootdrops, um dich gegen andere Spieler zu behaupten.<br>
+        Zeige dein Können in der Arena!
+      </p>
+      <button class="copy-ip" (click)="copyIP()">
+        Spiele jetzt auf HGLabor.de!
+      </button>
+    </div>
+  </div>
+  <div class="input">
+    <img src="{{ playerUUID !== '' ? 'https://crafatar.com/avatars/' + playerUUID + '?overlay' : 'https://crafatar.com/avatars/26a4fcde-de39-4ff0-8ea1-786582b7d8ee?overlay' }}" alt="">
+    <input type="text" placeholder="Spielername oder UUID eingeben" [(ngModel)]="inputPlayer">
+    <button class="search-player" (click)="searchPlayer()">
+      <ng-container *ngIf="!loadingPlayer; else loading"><img src="assets/search.svg" alt=""></ng-container>
+      <ng-template #loading><img src="assets/loading.gif" alt=""></ng-template>
+    </button>
+  </div>
+
+  <div class="player-stats" *ngIf="playerSelected" @enter>
+    <hr>
+    <h4>{{ playerStats.name }}</h4>
+    <h5>Stats</h5>
+    <div class="item">
+      <p>Kills</p><span>{{ playerStats.kills }}</span>
+    </div>
+    <div class="item">
+      <p>Deaths</p><span>{{ playerStats.deaths }}</span>
+    </div>
+    <div class="item">
+      <p>Highest Killstreak</p><span>{{ playerStats.highestKillStreak }}</span>
+    </div>
+    <div class="item">
+      <p>XP</p><span>{{ playerStats.xp }}</span>
+    </div>
+    <div class="item">
+      <p>Current Killstreak</p><span>{{ playerStats.currentKillStreak }}</span>
+    </div>
+    <div class="item">
+      <p>Bounty</p><span>{{ playerStats.bounty }}</span>
+    </div>
+    <h5>Heroes</h5>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let hero of playerStats.heroes | keyvalue">
+        <mat-expansion-panel-header>
+          <mat-panel-title>{{ hero.key | titlecase }}</mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngFor="let ability of hero.value | keyvalue">
+          <p class="ability-head">{{ formatHeroText(ability.key) | titlecase }}</p>
+          <div *ngFor="let detail of ability.value | keyvalue" class="item detail">
+            <p>{{ cropHeroText(formatHeroText(ability.key), formatHeroText(detail.key)) | titlecase }}</p><span>Level {{ detail.value['level'].experiencePoints }}</span><span>{{ detail.value['experiencePoints'] }} XP</span>
+          </div>
+          <br>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <div class="container content">
+    <div class="top">
+      <h2>- Top 10 -</h2>
+      <div class="top-players top-ten-players">
+        <div class="player" *ngFor="let player of topTenPlayers" (click)="openPlayerInfoModal(player.playerId)">
+          <h4>{{ topTenPlayers.indexOf(player) + 1 }}.</h4>
+          <img src="https://crafatar.com/avatars/{{ player.playerId }}?overlay" alt="Skin">
+          <p class="player-name">{{ player.name }}</p>
+          <p>{{ player.kills }} Kills</p>
+          <p class="mobile-hidden-1">{{ player.deaths }} Tode</p>
+          <p class="mobile-hidden-2">{{ player.xp }} XP</p>
+        </div>
+      </div>
+      <hr>
+      <div class="top-players">
+        <div class="player" *ngFor="let player of morePlayers" (click)="openPlayerInfoModal(player.playerId)">
+          <h4>{{ morePlayers.indexOf(player) + 11 }}.</h4>
+          <img src="https://crafatar.com/avatars/{{ player.playerId }}?overlay" alt="Skin">
+          <p class="player-name">{{ player.name }}</p>
+          <p>{{ player.kills }} Kills</p>
+          <p class="mobile-hidden-1">{{ player.deaths }} Tode</p>
+          <p class="mobile-hidden-2">{{ player.xp }} XP</p>
+        </div>
+      </div>
+      <button class="load-more-players" (click)="loadMorePlayers()">Mehr Spieler laden</button>
+    </div>
+  </div>
+  <div *ngIf="playerInfoModalOpen" class="window-modal" (click)="playerInfoModalOpen = false">
+    <div class="window" (click)="$event.stopPropagation()" @openModal>
+      <div class="window-header">
+        <h3>{{ currentPlayer.name }}</h3>
+        <button (click)="playerInfoModalOpen = false"><img src="assets/x.svg" alt=""></button>
+      </div>
+      <div class="window-content">
+        <div class="row row-cols-1 row-cols-xl-2 row-cols-lg-2 row-cols-md-2 row-cols-sm-1">
+          <div class="col skin">
+            <div class="skin-background">
+              <iframe class="skin-render" src="https://laby.net/embed#uuid=26a4fcde-de39-4ff0-8ea1-786582b7d8ee" frameborder="0"></iframe>
+            </div>
+          </div>
+          <div class="col stats">
+            <h3>Stats</h3>
+            <div class="item">
+              <p>Kills</p><span>{{ currentPlayer.kills }}</span>
+            </div>
+            <div class="item">
+              <p>Deaths</p><span>{{ currentPlayer.deaths }}</span>
+            </div>
+            <div class="item">
+              <p>Highest Killstreak</p><span>{{ currentPlayer.highestKillStreak }}</span>
+            </div>
+            <div class="item">
+              <p>XP</p><span>{{ currentPlayer.xp }}</span>
+            </div>
+            <div class="item">
+              <p>Current Killstreak</p><span>{{ currentPlayer.currentKillStreak }}</span>
+            </div>
+            <div class="item">
+              <p>Bounty</p><span>{{ currentPlayer.bounty }}</span>
+            </div>
+          </div>
+        </div>
+        <h3>Heros</h3>
+        <mat-accordion>
+          <mat-expansion-panel *ngFor="let hero of currentPlayer.heroes | keyvalue">
+            <mat-expansion-panel-header>
+              <mat-panel-title>{{ hero.key | titlecase }}</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngFor="let ability of hero.value | keyvalue">
+              <p class="ability-head">{{ formatHeroText(ability.key) | titlecase }}</p>
+              <div *ngFor="let detail of ability.value | keyvalue" class="item detail">
+                <p>{{ cropHeroText(formatHeroText(ability.key), formatHeroText(detail.key)) | titlecase }}</p><span>Level {{ detail.value['level'].experiencePoints }}</span><span>{{ detail.value['experiencePoints'] }} XP</span>
+              </div>
+              <br>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</main>

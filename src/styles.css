@@ -1,1 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
+@import "bootstrap";
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+  margin: 0;
+  font-family: "Press Start 2P", serif !important;
+  font-weight: 400;
+  font-style: normal;
+  background-color: #222222;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #0a93b3;
+  border-radius: 10px;
+}
+
+.mat-mdc-snack-bar-label, .mdc-button__label {
+  font-family: "Press Start 2P", serif !important;
+}
+
+.mat-expansion-panel {
+  background-color: #222222 !important;
+}
+
+.mat-expansion-panel * {
+  color: white !important;
+  font-family: "Press Start 2P", serif;
+}
+
+.mat-expansion-indicator * {
+  fill: white;
+}
+
+.mat-expansion-panel-header-title {
+  color: white !important;
+  font-family: "Press Start 2P", serif;
+}
+
+@media (max-width: 640px) {
+  .mat-expansion-panel-header-title {
+    font-size: 15px !important;
+  }
+}

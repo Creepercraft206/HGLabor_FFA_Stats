@@ -1,0 +1,18 @@
+{
+  "/api": {
+    "target": "https://api.mojang.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  },
+  "/minecraft": {
+    "target": "https://api.minecraftservices.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/minecraft": ""
+    }
+  }
+}
